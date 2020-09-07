@@ -1,36 +1,37 @@
+import logging
+import os
 import sys
-import platform
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient, QFontMetrics)
-from PySide2.QtWidgets import *
+from logging.handlers import RotatingFileHandler
 
-# GUI FILE
-from ui_main import Ui_MainWindow
-from ui_functions import *
+from PySide2.QtWidgets import QApplication
+
+from logic import Logic
+from main_window import MainWindow
+from model import Model
+
+class App(QApplication):
+    def __init__(self, sys_argv):
+        super(App, self).__init__(sys_argv)
+        self.model = Model()
+        self.logic = Logic(self.model)
+        self.mainWindow = MainWindow(self.model, self.logic)
+        self.mainWindow.show()
 
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        QMainWindow.__init__(self)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-
-        self.fm = QFontMetrics(self.font())
-
-        self.ui.my_email_entry.setFocus()
-        UIFunctions.hide_error_message(self)
-
-        ## TOGGLE/BURGUER MENU
-        ########################################################################
-        self.ui.browse_file_btn.clicked.connect(lambda: UIFunctions.browse_file(self))
-        self.ui.send_btn.clicked.connect(lambda: UIFunctions.send_email(self))
-        ## SHOW ==> MAIN WINDOW
-        ########################################################################
-        self.show()
-        ## ==> END ##
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
+if __name__ == '__main__':
+    try:
+        os.mkdir('log file')
+    except:
+        pass
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    file_handler = RotatingFileHandler('log file/app.log', maxBytes=100000, backupCount=10)
+    file_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    # logging.basicConfig(filename='app.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.info('Start')
+    app = App(sys.argv)
     sys.exit(app.exec_())

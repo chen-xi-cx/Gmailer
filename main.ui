@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Gmail</string>
+   <string>Gmailer</string>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
@@ -116,14 +116,14 @@
             <property name="font">
              <font>
               <family>Microsoft Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>16</pointsize>
              </font>
             </property>
             <property name="styleSheet">
              <string notr="true">color: rgb(220, 220, 220);</string>
             </property>
             <property name="text">
-             <string>Gmail</string>
+             <string>Gmailer</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -171,6 +171,11 @@
               <height>60</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -192,11 +197,17 @@ QPushButton:checked{
 }</string>
             </property>
             <property name="text">
-             <string>Send Mail</string>
+             <string>  Send Mail</string>
             </property>
             <property name="icon">
              <iconset>
               <normaloff>images/send_mail.png</normaloff>images/send_mail.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -223,6 +234,11 @@ QPushButton:checked{
               <height>60</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
@@ -244,11 +260,17 @@ QPushButton:checked{
 }</string>
             </property>
             <property name="text">
-             <string>Send Status</string>
+             <string>  Send Status</string>
             </property>
             <property name="icon">
              <iconset>
               <normaloff>images/time.png</normaloff>images/time.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -459,10 +481,7 @@ QScrollBar::sub-line {
                 <property name="frameShadow">
                  <enum>QFrame::Plain</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_6">
-                 <property name="spacing">
-                  <number>10</number>
-                 </property>
+                <layout class="QVBoxLayout" name="verticalLayout_9">
                  <item>
                   <widget class="QLabel" name="label_3">
                    <property name="minimumSize">
@@ -474,7 +493,7 @@ QScrollBar::sub-line {
                    <property name="font">
                     <font>
                      <family>Microsoft Sans Serif</family>
-                     <pointsize>14</pointsize>
+                     <pointsize>16</pointsize>
                     </font>
                    </property>
                    <property name="styleSheet">
@@ -492,7 +511,7 @@ QScrollBar::sub-line {
                   <widget class="QFrame" name="frame_3">
                    <property name="minimumSize">
                     <size>
-                     <width>0</width>
+                     <width>500</width>
                      <height>0</height>
                     </size>
                    </property>
@@ -543,8 +562,8 @@ border:none;</string>
                      <widget class="QLineEdit" name="my_email_entry">
                       <property name="minimumSize">
                        <size>
-                        <width>1000</width>
-                        <height>30</height>
+                        <width>0</width>
+                        <height>0</height>
                        </size>
                       </property>
                       <property name="font">
@@ -569,6 +588,11 @@ color: rgb(113, 112, 114);</string>
                     </item>
                     <item row="1" column="1">
                      <widget class="QLabel" name="email_address_error">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="styleSheet">
                        <string notr="true">color: rgb(255, 0, 0);</string>
                       </property>
@@ -582,6 +606,12 @@ color: rgb(113, 112, 114);</string>
                  </item>
                  <item alignment="Qt::AlignHCenter">
                   <widget class="QFrame" name="frame_4">
+                   <property name="minimumSize">
+                    <size>
+                     <width>500</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="maximumSize">
                     <size>
                      <width>500</width>
@@ -611,8 +641,8 @@ color: rgb(113, 112, 114);</string>
                      <widget class="QLineEdit" name="my_password_entry">
                       <property name="minimumSize">
                        <size>
-                        <width>1000</width>
-                        <height>30</height>
+                        <width>0</width>
+                        <height>0</height>
                        </size>
                       </property>
                       <property name="font">
@@ -652,6 +682,11 @@ border:none;</string>
                     </item>
                     <item row="1" column="1">
                      <widget class="QLabel" name="no_password_error">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="styleSheet">
                        <string notr="true">color: rgb(255, 0, 0);</string>
                       </property>
@@ -674,7 +709,7 @@ border:none;</string>
                    <property name="font">
                     <font>
                      <family>Microsoft Sans Serif</family>
-                     <pointsize>14</pointsize>
+                     <pointsize>16</pointsize>
                     </font>
                    </property>
                    <property name="styleSheet">
@@ -709,17 +744,10 @@ border:none;</string>
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
-                    <item row="1" column="0">
-                     <widget class="QLabel" name="to_error">
-                      <property name="styleSheet">
-                       <string notr="true">color: rgb(255, 0, 0);</string>
-                      </property>
-                      <property name="text">
-                       <string>Please select email list</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1">
+                    <property name="horizontalSpacing">
+                     <number>0</number>
+                    </property>
+                    <item row="0" column="2">
                      <widget class="QPushButton" name="browse_file_btn">
                       <property name="minimumSize">
                        <size>
@@ -762,7 +790,7 @@ QPushButton:hover{
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="0">
+                    <item row="0" column="1">
                      <widget class="QLabel" name="to_email_label">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -772,8 +800,48 @@ QPushButton:hover{
                       </property>
                       <property name="minimumSize">
                        <size>
-                        <width>300</width>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>Microsoft Sans Serif</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background:transparent;
+border:none;
+border-bottom:1px solid #717072;
+border-radius: 0px;
+color: rgb(113, 112, 114);
+padding-bottom: 5px;
+margin-right: 5px;</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_5">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
                         <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>40</width>
+                        <height>16777215</height>
                        </size>
                       </property>
                       <property name="font">
@@ -795,7 +863,29 @@ padding-bottom: 5px;</string>
                       </property>
                      </widget>
                     </item>
+                    <item row="1" column="1">
+                     <widget class="QLabel" name="receiver_file_label">
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
                    </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="to_error">
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: rgb(255, 0, 0);</string>
+                   </property>
+                   <property name="text">
+                    <string>Please select email list</string>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -832,7 +922,7 @@ padding-bottom: 5px;</string>
                       </property>
                       <property name="minimumSize">
                        <size>
-                        <width>200</width>
+                        <width>0</width>
                         <height>33</height>
                        </size>
                       </property>
@@ -856,6 +946,11 @@ padding-bottom: 5px;</string>
                     </item>
                     <item>
                      <widget class="QLabel" name="invalid_col_error">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
                       <property name="styleSheet">
                        <string notr="true">color: rgb(255, 0, 0);</string>
                       </property>
@@ -868,55 +963,137 @@ padding-bottom: 5px;</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLineEdit" name="subject_entry">
+                  <widget class="QFrame" name="frame_8">
                    <property name="minimumSize">
                     <size>
-                     <width>1000</width>
+                     <width>0</width>
                      <height>50</height>
                     </size>
                    </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>12</pointsize>
-                    </font>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">background:transparent;
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_8">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLineEdit" name="subject_entry">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background:transparent;
 border:none;
 border-bottom:1px solid #717072;
 border-radius: 0px;
 color: rgb(113, 112, 114);
 padding-left: 1.5px;
 padding-bottom: 5px;</string>
-                   </property>
-                   <property name="placeholderText">
-                    <string>Subject</string>
-                   </property>
+                      </property>
+                      <property name="placeholderText">
+                       <string>Subject</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QTextEdit" name="msg_entry">
-                   <property name="minimumSize">
-                    <size>
-                     <width>100</width>
-                     <height>33</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>12</pointsize>
-                    </font>
-                   </property>
+                  <widget class="QScrollArea" name="scrollArea">
                    <property name="styleSheet">
-                    <string notr="true">background:transparent;
+                    <string notr="true">background-color: rgb(255, 255, 255);</string>
+                   </property>
+                   <property name="verticalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAsNeeded</enum>
+                   </property>
+                   <property name="horizontalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAsNeeded</enum>
+                   </property>
+                   <property name="widgetResizable">
+                    <bool>true</bool>
+                   </property>
+                   <widget class="QWidget" name="scrollAreaWidgetContents">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>0</y>
+                      <width>736</width>
+                      <height>123</height>
+                     </rect>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_6">
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QTextEdit" name="msg_entry">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <pointsize>12</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background:transparent;
 border:none;
 border-radius: 0px;
 color: rgb(113, 112, 114);
 padding-top: 5px;</string>
-                   </property>
-                   <property name="placeholderText">
-                    <string>Message</string>
-                   </property>
+                       </property>
+                       <property name="verticalScrollBarPolicy">
+                        <enum>Qt::ScrollBarAlwaysOff</enum>
+                       </property>
+                       <property name="horizontalScrollBarPolicy">
+                        <enum>Qt::ScrollBarAlwaysOff</enum>
+                       </property>
+                       <property name="sizeAdjustPolicy">
+                        <enum>QAbstractScrollArea::AdjustIgnored</enum>
+                       </property>
+                       <property name="placeholderText">
+                        <string>Message</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
                   </widget>
                  </item>
                  <item>
@@ -972,7 +1149,7 @@ QPushButton::hover{
                      </widget>
                     </item>
                     <item>
-                     <widget class="QFrame" name="attached_file_frame">
+                     <widget class="QFrame" name="frame_9">
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
                       </property>
@@ -1032,7 +1209,70 @@ QPushButton:hover{
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="status_page"/>
+            <widget class="QWidget" name="status_page">
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="frame_10">
+                <property name="styleSheet">
+                 <string notr="true">QFrame{
+	background-color: rgb(255, 255, 255);
+	border-radius: 20px;
+}
+
+QScrollBar {
+    border: none;
+    background: #F8F8F8;
+}
+
+QScrollBar::handle {
+    background: #CCCCCC;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+QScrollBar::vertical {
+    width: 10px;
+}
+
+QScrollBar::horizontal {
+    height: 10px;
+}
+
+QScrollBar::add-line {
+    border: none;
+    background: none;
+}
+
+QScrollBar::sub-line {
+    border: none;
+    background: none;
+}</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Plain</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
