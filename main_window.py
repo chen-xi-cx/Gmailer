@@ -1,7 +1,7 @@
 import os
 from functools import partial
 
-from PySide2.QtCore import QPoint, Qt, QTimer
+from PySide2.QtCore import Qt, QTimer
 from PySide2.QtGui import QFontMetrics
 from PySide2.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QTextEdit
 
@@ -19,6 +19,8 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.receiver_file_label.setVisible(False)
+        self.ui.status.setText('You haven\'t send anything!')
+        # self.ui.msg_entry.installEventFilter(self)
 
         compulsory_list = []
         compulsory_list.append(self.ui.column_name_entry)
@@ -47,29 +49,69 @@ class MainWindow(QMainWindow):
         self.ui.attach_btn.clicked.connect(self.attach_file)
         self.ui.send_btn.clicked.connect(lambda : self.send_email(compulsory_list, optional_list, True))
 
+        # listen for logic event signals
         getattr(self.logic, 'signal_' + str(4)).connect(lambda : self.show_no_subject_pop_up(compulsory_list, optional_list))
         getattr(self.logic, 'signal_' + str(0)).connect(self.show_email_column_error)
         getattr(self.logic, 'signal_' + str(1)).connect(self.show_receiver_email_error)
         getattr(self.logic, 'signal_' + str(2)).connect(self.show_password_error)
         getattr(self.logic, 'signal_' + str(3)).connect(self.show_my_email_error)
+        self.logic.sending_start.connect(self.show_sending_start)
+        self.logic.success_email.connect(self.update_successful_status)
+        self.logic.fail_email.connect(self.update_fail_status)
+        self.logic.sending_done.connect(self.show_sending_finish)
+        self.logic.send_progress.connect(self.update_progress_bar)
 
-        # listen for model event signals
+    def update_progress_bar(self, progress):
+        self.ui.progress_bar.setValue(progress)
+
+    def show_sending_finish(self):
+        self.ui.send_btn.setEnabled(True)
+        msg = self.ui.status.toPlainText()
+        self.ui.status.setText('{}\nAll emails sent!'.format(msg))
+
+    def show_sending_start(self):
+        self.ui.send_btn.setDisabled(True)
+        self.ui.status.setText('Sending emails...')
+        self.ui.status_btn.click()
+        self.ui.stackedWidget.setCurrentWidget(self.ui.status_page)
+
+    def update_successful_status(self, email):
+        msg = self.ui.status.toPlainText()
+        self.ui.status.setText('{}\nsuccess: {}'.format(msg, email))
+
+    def update_fail_status(self, email):
+        msg = self.ui.status.toPlainText()
+        self.ui.status.setText('{}\nfail: {}'.format(msg, email))
+
 
     def focus_on_attachment(self):
         position = self.ui.scrollArea.verticalScrollBar().maximum()
         self.ui.scrollArea.verticalScrollBar().setValue(position)
         # self.ui.scrollArea.verticalScrollBar().setValue(self.ui.attachment_grid.contentsRect().bottom())
 
+    # def eventFilter(self, source, event):
+    #     # adjust msg_entry height when it is resized by maximising or minimising window
+    #     if event.type() == QEvent.Resize and source is self.ui.msg_entry:
+    #         self.adjust_height()
+    #     return super().eventFilter(source, event)
+
+    # overrides resizeEvent of QMainWindow
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.adjust_height()
+
     def adjust_slider(self):
-        # expand height to remove scroll bar of QTextEdit
-        height = self.ui.msg_entry.document().size().height()
-        self.ui.msg_entry.setMinimumHeight(height)
-        
+        self.adjust_height()
         position = self.ui.msg_entry.cursorRect()
         # wait for 1 millisecond (for scroll bar height to re-adjust) before setting vertical scroll bar value
         QTimer.singleShot(1, partial(self.ui.scrollArea.ensureVisible, position.x(), position.y(), 0, 30))
-        # less ideal method try next line
+        # less ideal method
         # self.ui.scrollArea.verticalScrollBar().setValue(self.ui.msg_entry.cursorRect().top())
+
+    def adjust_height(self):
+        # expand height to remove scroll bar of QTextEdit
+        height = self.ui.msg_entry.document().size().height()
+        self.ui.msg_entry.setMinimumHeight(height)
 
 
     def get_compulsory_text(self, compulsory_list):

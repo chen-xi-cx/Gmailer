@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainelaAyf.ui'
+## Form generated from reading UI file 'mainsUcGuP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.0
 ##
@@ -134,6 +134,7 @@ class Ui_MainWindow(object):
         self.status_btn.setIcon(icon1)
         self.status_btn.setIconSize(QSize(25, 25))
         self.status_btn.setCheckable(True)
+        self.status_btn.setChecked(False)
 
         self.verticalLayout_2.addWidget(self.status_btn)
 
@@ -649,6 +650,38 @@ class Ui_MainWindow(object):
 "}")
         self.frame_10.setFrameShape(QFrame.NoFrame)
         self.frame_10.setFrameShadow(QFrame.Plain)
+        self.verticalLayout_10 = QVBoxLayout(self.frame_10)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.status = QTextEdit(self.frame_10)
+        self.status.setObjectName(u"status")
+        self.status.setFont(font1)
+        self.status.setReadOnly(True)
+
+        self.verticalLayout_10.addWidget(self.status)
+
+        self.progress_bar = QProgressBar(self.frame_10)
+        self.progress_bar.setObjectName(u"progress_bar")
+        self.progress_bar.setFont(font3)
+        self.progress_bar.setStyleSheet(u"QProgressBar {\n"
+"	border: none;\n"
+"	border-radius:10px;\n"
+"	background-color: rgb(231, 233, 231);\n"
+"}\n"
+"\n"
+"\n"
+"QProgressBar::chunk {\n"
+"	background:#1fb622;\n"
+"	border: 2px solid black;\n"
+"	border-radius:10px;\n"
+"}")
+        self.progress_bar.setValue(0)
+        self.progress_bar.setAlignment(Qt.AlignCenter)
+        self.progress_bar.setTextVisible(True)
+        self.progress_bar.setInvertedAppearance(False)
+        self.progress_bar.setTextDirection(QProgressBar.TopToBottom)
+
+        self.verticalLayout_10.addWidget(self.progress_bar)
+
 
         self.verticalLayout_8.addWidget(self.frame_10)
 
@@ -680,8 +713,8 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"Send Email", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Login", None))
         self.pushButton.setText("")
-        self.my_email_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your email address", None))
-        self.email_address_error.setText(QCoreApplication.translate("MainWindow", u"Please enter your email address correctly", None))
+        self.my_email_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your gmail address", None))
+        self.email_address_error.setText(QCoreApplication.translate("MainWindow", u"Please enter your gmail correctly", None))
         self.my_password_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Your password", None))
         self.pushButton_2.setText("")
         self.no_password_error.setText(QCoreApplication.translate("MainWindow", u"Please enter your password correctly", None))
@@ -697,5 +730,6 @@ class Ui_MainWindow(object):
         self.msg_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Message", None))
         self.attach_btn.setText("")
         self.send_btn.setText(QCoreApplication.translate("MainWindow", u"Send", None))
+        self.progress_bar.setFormat(QCoreApplication.translate("MainWindow", u"%p%", None))
     # retranslateUi
 

@@ -275,6 +275,9 @@ QPushButton:checked{
             <property name="checkable">
              <bool>true</bool>
             </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
             <attribute name="buttonGroup">
              <string notr="true">side_button_group</string>
             </attribute>
@@ -579,7 +582,7 @@ border-radius: 0px;
 color: rgb(113, 112, 114);</string>
                       </property>
                       <property name="placeholderText">
-                       <string>Your email address</string>
+                       <string>Your gmail address</string>
                       </property>
                       <property name="clearButtonEnabled">
                        <bool>false</bool>
@@ -597,7 +600,7 @@ color: rgb(113, 112, 114);</string>
                        <string notr="true">color: rgb(255, 0, 0);</string>
                       </property>
                       <property name="text">
-                       <string>Please enter your email address correctly</string>
+                       <string>Please enter your gmail correctly</string>
                       </property>
                      </widget>
                     </item>
@@ -1269,6 +1272,61 @@ QScrollBar::sub-line {
                 <property name="frameShadow">
                  <enum>QFrame::Plain</enum>
                 </property>
+                <layout class="QVBoxLayout" name="verticalLayout_10">
+                 <item>
+                  <widget class="QTextEdit" name="status">
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QProgressBar" name="progress_bar">
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QProgressBar {
+	border: none;
+	border-radius:10px;
+	background-color: rgb(231, 233, 231);
+}
+
+
+QProgressBar::chunk {
+	background:#1fb622;
+	border: 2px solid black;
+	border-radius:10px;
+}</string>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                   <property name="textVisible">
+                    <bool>true</bool>
+                   </property>
+                   <property name="invertedAppearance">
+                    <bool>false</bool>
+                   </property>
+                   <property name="textDirection">
+                    <enum>QProgressBar::TopToBottom</enum>
+                   </property>
+                   <property name="format">
+                    <string>%p%</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
              </layout>

@@ -1,17 +1,12 @@
 import logging
-import os
 import smtplib
 import ssl
-import time
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
+import numpy as np
 import pandas as pd
-from PySide2.QtCore import QObject, Signal
+from PySide2.QtCore import QObject, QThreadPool, Signal
 
-from attachment_label import AttachmentLabel
+from email_thread import EmailThread
 
 class Logic(QObject):
     signal_0 = Signal() # email column
@@ -19,6 +14,11 @@ class Logic(QObject):
     signal_2 = Signal() # password
     signal_3 = Signal() # my email
     signal_4 = Signal() # subject
+    sending_start = Signal()
+    fail_email = Signal(str)
+    success_email = Signal(str)
+    sending_done = Signal()
+    send_progress = Signal(int)
 
     def __init__(self, model):
         super().__init__()
@@ -29,6 +29,12 @@ class Logic(QObject):
         self.is_valid_field_dict['is_valid_receiver_file'] = False
         self.is_valid_field_dict['is_valid_password'] = False
         self.is_valid_field_dict['is_valid_my_email'] = False
+        self.successful_email_counter = 0
+        self.unsuccessful_list = []
+        self.threadpool = QThreadPool()
+        num_email_threads = 5
+        self.threadpool.setMaxThreadCount(num_email_threads)
+        self.total_email = 0
 
     def send_email(self, compulsory_text, optional_text, send_with_subject):
         is_valid_field = self.check_valid_field(compulsory_text)
@@ -38,7 +44,7 @@ class Logic(QObject):
         
         email_column, receiver_email_file, password, my_email = compulsory_text
         subject, body_msg = optional_text
-        
+
         if send_with_subject and not subject:
             self.signal_4.emit()
             return
@@ -49,75 +55,77 @@ class Logic(QObject):
         except KeyError:
             self.signal_0.emit()
             return
-
+            
         try:
             context = ssl.create_default_context()
             server = smtplib.SMTP("smtp.gmail.com", 587)
             server.starttls(context=context)
             server.login(my_email, password)
-            unsuccessful_list = []
-
-            counter = 1
-
-            emails = [emails[i:i + 50] for i in range(0, len(emails), 50)]
-
-            for sublist in emails:
-                if counter != 1:
-                    time.sleep(61)
-                for email in sublist:
-                    try:
-                        msg = MIMEMultipart()
-                        msg["From"] = my_email
-                        msg["To"] = email
-                        msg['Subject'] = subject
-                        msg.attach(MIMEText(body_msg, "plain"))
-                        
-                        for filename in AttachmentLabel.attachment_list:
-                            attachment_name = os.path.basename(filename)
-                            with open(filename, "rb") as attachment:
-                                part = MIMEBase("application", "octet-stream")
-                                part.set_payload(attachment.read())
-                            
-                            encoders.encode_base64(part)
-                            
-                            part.add_header(
-                                "Content-Disposition",
-                                f"attachment; filename= {attachment_name}",
-                            )
-                        
-                            msg.attach(part)
-                        
-                        server.sendmail(my_email, email, msg.as_string())
-                        print("{}. success: {}".format(counter, email))
-                        counter = counter + 1
-                    except smtplib.SMTPRecipientsRefused:
-                        self.logger.exception("Recipient refused")
-                        self.signal_0.emit()
-                        unsuccessful_list.append(email)
-                    except:
-                        self.logger.exception("Message Send Error")
-                        print("fail: {}".format(email))
-                        unsuccessful_list.append(email)
-                    
-            server.quit()
-            print('finish sending')
         except smtplib.SMTPAuthenticationError:
             self.signal_2.emit()
             self.signal_3.emit()
             return
-        
         except:
             self.logger.exception("SMTP error")
+
+        email_input = {'my_email' : my_email, 'password' : password,
+                'subject' : subject, 'body' : body_msg}
+
+
+        self.total_email = len(emails)
+        num_email_threads = min(5, len(emails))
+        emails = np.array_split(emails, num_email_threads)
+
+        self.successful_email_counter = 0
+        self.unsuccessful_list = []
+
+        self.sending_start.emit()
+        for sublist in emails:
+            email_thread = EmailThread(sublist, email_input)
+            email_thread.signal.invalid_email_column.connect(self.show_invalid_email_error)
+            email_thread.signal.fail_email.connect(self.update_fail_email)
+            email_thread.signal.success_email.connect(self.update_successful_email)
+            self.threadpool.start(email_thread)
+
+        print('number of active thread', self.threadpool.activeThreadCount())
+
+
+    def is_sending_done(self):
+        num_email_processed = len(self.unsuccessful_list) + self.successful_email_counter
+        self.send_progress.emit(num_email_processed / self.total_email * 100)
+        if num_email_processed == self.total_email:
+            self.sending_done.emit()
+            
+            unsuccessful_file = open('unsuccessful_emails.txt', 'w')
+            unsuccessful_file_string = '\n'.join(self.unsuccessful_list)
+            unsuccessful_file.write(unsuccessful_file_string)
+            unsuccessful_file.close()
+            
+            self.logger.info(unsuccessful_file_string)
+
+    def show_invalid_email_error(self):
+        self.is_sending_done()
+        self.signal_0.emit()
+
+    def update_fail_email(self, email):
+        self.unsuccessful_list.append(email)
+        self.fail_email.emit(email)
+        self.is_sending_done()
+
+    def update_successful_email(self, email):
+        self.successful_email_counter += 1
+        self.success_email.emit(email)
+        self.is_sending_done()
 
     def check_valid_field(self, compulsory_text):
         is_valid_field = True
         idx = 0
         
-        for input in self.is_valid_field_dict:
+        for email_input in self.is_valid_field_dict:
             if compulsory_text[idx]:
-                self.is_valid_field_dict[input] = True
+                self.is_valid_field_dict[email_input] = True
             else:
-                self.is_valid_field_dict[input] = False
+                self.is_valid_field_dict[email_input] = False
                 getattr(self, 'signal_' + str(idx)).emit()
                 is_valid_field = False
             idx += 1
