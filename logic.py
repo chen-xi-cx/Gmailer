@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 from PySide2.QtCore import QObject, QThreadPool, Signal
 
+from attachment_label import AttachmentLabel
 from email_thread import EmailThread
+
 
 class Logic(QObject):
     signal_0 = Signal() # email column
@@ -14,11 +16,15 @@ class Logic(QObject):
     signal_2 = Signal() # password
     signal_3 = Signal() # my email
     signal_4 = Signal() # subject
+    
     sending_start = Signal()
     fail_email = Signal(str)
     success_email = Signal(str)
-    sending_done = Signal()
+    sending_done = Signal(int, int)
     send_progress = Signal(int)
+
+    attachment_limit_reached = Signal()
+    attachment_byte_limit = 20000000 #20 MB
 
     def __init__(self, model):
         super().__init__()
@@ -87,21 +93,18 @@ class Logic(QObject):
             email_thread.signal.success_email.connect(self.update_successful_email)
             self.threadpool.start(email_thread)
 
-        print('number of active thread', self.threadpool.activeThreadCount())
-
 
     def is_sending_done(self):
         num_email_processed = len(self.unsuccessful_list) + self.successful_email_counter
         self.send_progress.emit(num_email_processed / self.total_email * 100)
         if num_email_processed == self.total_email:
-            self.sending_done.emit()
+            self.sending_done.emit(self.successful_email_counter, len(self.unsuccessful_list))
+
+            unsuccessful_df = pd.DataFrame(self.unsuccessful_list, columns=['email'])
+            unsuccessful_df.to_excel('unsuccessful_emails.xlsx', index=False)
             
-            unsuccessful_file = open('unsuccessful_emails.txt', 'w')
             unsuccessful_file_string = '\n'.join(self.unsuccessful_list)
-            unsuccessful_file.write(unsuccessful_file_string)
-            unsuccessful_file.close()
-            
-            self.logger.info(unsuccessful_file_string)
+            self.logger.info('unsuccessful list\n{}'.format(unsuccessful_file_string))
 
     def show_invalid_email_error(self):
         self.is_sending_done()
@@ -129,5 +132,9 @@ class Logic(QObject):
                 getattr(self, 'signal_' + str(idx)).emit()
                 is_valid_field = False
             idx += 1
-        
+
+        if AttachmentLabel.attachment_list_byte_size > Logic.attachment_byte_limit:
+            self.attachment_limit_reached.emit()
+            is_valid_field = False
+
         return is_valid_field

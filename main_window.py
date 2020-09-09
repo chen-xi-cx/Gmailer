@@ -2,7 +2,7 @@ import os
 from functools import partial
 
 from PySide2.QtCore import Qt, QTimer
-from PySide2.QtGui import QFontMetrics
+from PySide2.QtGui import QFontMetrics, QTextCursor
 from PySide2.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QTextEdit
 
 from attachment_label import AttachmentLabel
@@ -20,6 +20,8 @@ class MainWindow(QMainWindow):
 
         self.ui.receiver_file_label.setVisible(False)
         self.ui.status.setText('You haven\'t send anything!')
+
+        self.fm = QFontMetrics(self.ui.to_email_label.font()) # for setting text ellipsis
         # self.ui.msg_entry.installEventFilter(self)
 
         compulsory_list = []
@@ -40,8 +42,6 @@ class MainWindow(QMainWindow):
 
         
         # connect ui to logic
-        self.fm = QFontMetrics(self.font())
-
         self.ui.my_email_entry.setFocus()
         self.hide_error_message()
 
@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
         getattr(self.logic, 'signal_' + str(1)).connect(self.show_receiver_email_error)
         getattr(self.logic, 'signal_' + str(2)).connect(self.show_password_error)
         getattr(self.logic, 'signal_' + str(3)).connect(self.show_my_email_error)
+        self.logic.attachment_limit_reached.connect(self.ui.invalid_byte_size_error.show)
         self.logic.sending_start.connect(self.show_sending_start)
         self.logic.success_email.connect(self.update_successful_status)
         self.logic.fail_email.connect(self.update_fail_status)
@@ -64,30 +65,46 @@ class MainWindow(QMainWindow):
     def update_progress_bar(self, progress):
         self.ui.progress_bar.setValue(progress)
 
-    def show_sending_finish(self):
+    def show_sending_finish(self, num_success, num_fail):
         self.ui.send_btn.setEnabled(True)
-        msg = self.ui.status.toPlainText()
-        self.ui.status.setText('{}\nAll emails sent!'.format(msg))
+        self.ui.status.moveCursor(QTextCursor.End)
+        self.ui.status.insertHtml(('<br>All emails sent!'
+                                   '<br><b>Number of successful sends: {}'
+                                   '<br>Number of fail sends: {}</b>'
+                                   '<br>Failed emails saved as \'unsuccessful_emails.xlsx\' '
+                                   'in the folder where this app is in')
+                                   .format(num_success, num_fail))
+        self.ui.status.moveCursor(QTextCursor.End)
 
     def show_sending_start(self):
+        self.ui.progress_bar.setValue(0)
         self.ui.send_btn.setDisabled(True)
         self.ui.status.setText('Sending emails...')
         self.ui.status_btn.click()
         self.ui.stackedWidget.setCurrentWidget(self.ui.status_page)
 
     def update_successful_status(self, email):
-        msg = self.ui.status.toPlainText()
-        self.ui.status.setText('{}\nsuccess: {}'.format(msg, email))
+        self.ui.status.moveCursor(QTextCursor.End)
+        self.ui.status.insertPlainText('\nsuccess: {}'.format(email))
+        self.ui.status.moveCursor(QTextCursor.End)
 
     def update_fail_status(self, email):
-        msg = self.ui.status.toPlainText()
-        self.ui.status.setText('{}\nfail: {}'.format(msg, email))
+        self.ui.status.moveCursor(QTextCursor.End)
+        self.ui.status.insertPlainText('\nfail: {}'.format(email))
+        self.ui.status.moveCursor(QTextCursor.End)
 
 
     def focus_on_attachment(self):
         position = self.ui.scrollArea.verticalScrollBar().maximum()
         self.ui.scrollArea.verticalScrollBar().setValue(position)
         # self.ui.scrollArea.verticalScrollBar().setValue(self.ui.attachment_grid.contentsRect().bottom())
+
+    def truncate_email_label_text(self):
+        email_label = os.path.basename(self.ui.receiver_file_label.text())
+        label_width = self.ui.to_email_label.width()
+        self.ui.to_email_label.setText(self.fm.elidedText(email_label,
+                                                          Qt.ElideRight, label_width))
+
 
     # def eventFilter(self, source, event):
     #     # adjust msg_entry height when it is resized by maximising or minimising window
@@ -99,7 +116,8 @@ class MainWindow(QMainWindow):
     def resizeEvent(self, event):
         super().resizeEvent(event)
         self.adjust_height()
-
+        self.truncate_email_label_text()
+        
     def adjust_slider(self):
         self.adjust_height()
         position = self.ui.msg_entry.cursorRect()
@@ -155,6 +173,7 @@ class MainWindow(QMainWindow):
         self.ui.no_password_error.setVisible(False)
         self.ui.to_error.setVisible(False)
         self.ui.invalid_col_error.setVisible(False)
+        self.ui.invalid_byte_size_error.setVisible(False)
         
 
     def send_email(self, compulsory_list, optional_list, send_with_subject):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainsUcGuP.ui'
+## Form generated from reading UI file 'mainXPYtCd.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.0
 ##
@@ -521,7 +521,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 736, 123))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 736, 120))
         self.verticalLayout_6 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -574,6 +574,15 @@ class Ui_MainWindow(object):
         self.frame_9.setObjectName(u"frame_9")
         self.frame_9.setFrameShape(QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.frame_9)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.invalid_byte_size_error = QLabel(self.frame_9)
+        self.invalid_byte_size_error.setObjectName(u"invalid_byte_size_error")
+        self.invalid_byte_size_error.setFont(font3)
+        self.invalid_byte_size_error.setStyleSheet(u"color: rgb(255, 0, 0);")
+
+        self.horizontalLayout_4.addWidget(self.invalid_byte_size_error)
+
 
         self.horizontalLayout_7.addWidget(self.frame_9)
 
@@ -729,6 +738,7 @@ class Ui_MainWindow(object):
         self.subject_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Subject", None))
         self.msg_entry.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Message", None))
         self.attach_btn.setText("")
+        self.invalid_byte_size_error.setText(QCoreApplication.translate("MainWindow", u"Attachments should not be larger than 20MB", None))
         self.send_btn.setText(QCoreApplication.translate("MainWindow", u"Send", None))
         self.progress_bar.setFormat(QCoreApplication.translate("MainWindow", u"%p%", None))
     # retranslateUi

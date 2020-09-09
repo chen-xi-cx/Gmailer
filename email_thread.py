@@ -32,9 +32,10 @@ class EmailThread(QRunnable):
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls(context=context)
         server.login(self.email_input['my_email'], self.email_input['password'])
-        counter = 1
+        counter = 0
         for receiver_email in self.email_list:
-            if counter % 11 == 0 and counter != 1:
+            counter += 1
+            if counter % 10 == 1 and counter != 1:
                 time.sleep(61)
             try:
                 msg = MIMEMultipart()
@@ -47,8 +48,8 @@ class EmailThread(QRunnable):
 
                 for filename in AttachmentLabel.attachment_list:
                     attachment_name = os.path.basename(filename)
-                    mimetype, encoding = mimetypes.guess_type(filename)
-                    main_type, sub_type = mimetype.split('/', 1)
+                    mimetype, _ = mimetypes.guess_type(filename)
+                    _, sub_type = mimetype.split('/', 1)
                     with open(filename, "rb") as attachment:
                         part = MIMEApplication(attachment.read(), _subtype=sub_type)
 
@@ -59,11 +60,13 @@ class EmailThread(QRunnable):
                 self.signal.success_email.emit(receiver_email)
 
             # except smtplib.SMTPRecipientsRefused:
-            #     self.logger.exception("Recipient refused")
-            #     self.signal.invalid_email_column.emit(receiver_email)
-            #     print('fail', receiver_email)
+            #     self.logger.exception("Recipients refused" + str(receiver_email))
+            #     self.signal.fail_email.emit(receiver_email)
             except:
-                self.logger.exception("Message Send Error")
+                self.logger.exception("Message Send Error: {}".format(receiver_email))
                 self.signal.fail_email.emit(receiver_email)
 
-        server.quit()
+        try:
+            server.quit()
+        except:
+            self.logger.exception("Trying to quit server")

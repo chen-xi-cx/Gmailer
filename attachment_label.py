@@ -6,12 +6,14 @@ from PySide2.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QWidget
 
 class AttachmentLabel(QWidget):
     attachment_list = []
+    attachment_list_byte_size = 0
 
     def __init__(self, file_name):
-        super(AttachmentLabel, self).__init__()
+        super().__init__()
         self.file_name = file_name
-
-        self.attachment_list.append(file_name)
+        
+        AttachmentLabel.attachment_list.append(file_name)
+        AttachmentLabel.attachment_list_byte_size += os.path.getsize(file_name)
 
         self.frame = QFrame()
         
@@ -44,4 +46,5 @@ class AttachmentLabel(QWidget):
         self.destroyed.connect(lambda : self.remove_attachment())
 
     def remove_attachment(self):
-        self.attachment_list.remove(self.file_name)
+        AttachmentLabel.attachment_list.remove(self.file_name)
+        AttachmentLabel.attachment_list_byte_size -= os.path.getsize(self.file_name)

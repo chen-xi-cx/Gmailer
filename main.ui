@@ -1045,7 +1045,7 @@ padding-bottom: 5px;</string>
                       <x>0</x>
                       <y>0</y>
                       <width>736</width>
-                      <height>123</height>
+                      <height>120</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1159,6 +1159,23 @@ QPushButton::hover{
                       <property name="frameShadow">
                        <enum>QFrame::Raised</enum>
                       </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_4">
+                       <item>
+                        <widget class="QLabel" name="invalid_byte_size_error">
+                         <property name="font">
+                          <font>
+                           <pointsize>10</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">color: rgb(255, 0, 0);</string>
+                         </property>
+                         <property name="text">
+                          <string>Attachments should not be larger than 20MB</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
