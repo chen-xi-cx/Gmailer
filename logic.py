@@ -41,6 +41,7 @@ class Logic(QObject):
         num_email_threads = 5
         self.threadpool.setMaxThreadCount(num_email_threads)
         self.total_email = 0
+        self.thread_list = []
 
     def send_email(self, compulsory_text, optional_text, send_with_subject):
         is_valid_field = self.check_valid_field(compulsory_text)
@@ -91,14 +92,20 @@ class Logic(QObject):
             email_thread.signal.invalid_email_column.connect(self.show_invalid_email_error)
             email_thread.signal.fail_email.connect(self.update_fail_email)
             email_thread.signal.success_email.connect(self.update_successful_email)
+            self.thread_list.append(email_thread)
             self.threadpool.start(email_thread)
 
+    def kill_thread(self):
+        for thread in self.thread_list:
+            thread.kill()
 
+            
     def is_sending_done(self):
         num_email_processed = len(self.unsuccessful_list) + self.successful_email_counter
         self.send_progress.emit(num_email_processed / self.total_email * 100)
         if num_email_processed == self.total_email:
             self.sending_done.emit(self.successful_email_counter, len(self.unsuccessful_list))
+            self.thread_list = []
 
             unsuccessful_df = pd.DataFrame(self.unsuccessful_list, columns=['email'])
             unsuccessful_df.to_excel('unsuccessful_emails.xlsx', index=False)

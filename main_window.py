@@ -1,22 +1,38 @@
 import os
+import logging
 from functools import partial
 
 from PySide2.QtCore import Qt, QTimer
 from PySide2.QtGui import QFontMetrics, QTextCursor
-from PySide2.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QTextEdit
+from PySide2.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QTextEdit, QApplication
 
 from attachment_label import AttachmentLabel
 from ui_extend import Ui_MainWindow_Extend
+from ui_close_window import Ui_CloseWindow
+
+class CloseWindow(QMainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+
+        self.ui = Ui_CloseWindow()
+        self.ui.setupUi(self)
+        flag = Qt.WindowFlags(Qt.WindowMinimizeButtonHint)
+        self.setWindowFlags(flag)
 
 class MainWindow(QMainWindow):
     def __init__(self, model, logic):
         QMainWindow.__init__(self)
+        
+
+        self.logger = logging.getLogger(__name__)
 
         self.model = model
         self.logic = logic
 
         self.ui = Ui_MainWindow_Extend()
         self.ui.setupUi(self)
+
+        self.close_window = CloseWindow()
 
         self.ui.receiver_file_label.setVisible(False)
         self.ui.status.setText('You haven\'t send anything!')
@@ -37,8 +53,8 @@ class MainWindow(QMainWindow):
 
         # listen for ui event signals
         self.ui.msg_entry.cursorPositionChanged.connect(self.adjust_slider)
-        self.ui.send_mail_btn.clicked.connect(lambda : self.ui.stackedWidget.setCurrentWidget(self.ui.mail_page))
-        self.ui.status_btn.clicked.connect(lambda : self.ui.stackedWidget.setCurrentWidget(self.ui.status_page))
+        self.ui.send_mail_btn.clicked.connect(self.switch_to_email_pg)
+        self.ui.status_btn.clicked.connect(self.switch_to_status_pg)
 
         
         # connect ui to logic
@@ -61,6 +77,36 @@ class MainWindow(QMainWindow):
         self.logic.fail_email.connect(self.update_fail_status)
         self.logic.sending_done.connect(self.show_sending_finish)
         self.logic.send_progress.connect(self.update_progress_bar)
+
+    def switch_to_email_pg(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.mail_page)
+        self.ui.label.setText("Send Email")
+
+    def switch_to_status_pg(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.status_page)
+        self.ui.label.setText("Send Status")
+
+        
+
+    def closeEvent(self, event):
+        if self.logic.threadpool.activeThreadCount() > 0:
+            button_clicked = self.ui.show_exit_confirmation()
+            if button_clicked == QMessageBox.Yes:
+                self.logger.info("User terminate program")
+                self.close_window.show()
+                self.hide()
+                QApplication.processEvents()
+                self.logic.kill_thread()
+                while self.logic.threadpool.activeThreadCount() != 0:
+                    QApplication.processEvents()
+                self.close_window.close()
+                event.accept()
+            else:
+                event.ignore()
+        else:
+            self.logger.info('Close program')
+            event.accept()
+
 
     def update_progress_bar(self, progress):
         self.ui.progress_bar.setValue(progress)
@@ -151,6 +197,8 @@ class MainWindow(QMainWindow):
         receiver_file_name, _ = QFileDialog.getOpenFileName(self, 'Select A File',
                                                             os.path.join(os.environ["HOMEPATH"], "Desktop"),
                                                             "excel files (*.xlsx)")
+        if not receiver_file_name:
+            return
         self.model.receiver_file_name = receiver_file_name
         label_width = self.ui.to_email_label.width()
         self.ui.to_email_label.setText(self.fm.elidedText(receiver_file_name.split('/')[-1],

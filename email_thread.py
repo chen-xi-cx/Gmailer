@@ -25,6 +25,7 @@ class EmailThread(QRunnable):
         self.email_list = email_list
         self.email_input = email_input
         self.signal = EmailThreadSignal()
+        self.is_killed = False
 
     @Slot()
     def run(self):
@@ -34,6 +35,15 @@ class EmailThread(QRunnable):
         server.login(self.email_input['my_email'], self.email_input['password'])
         counter = 0
         for receiver_email in self.email_list:
+            if self.is_killed:
+                try:
+                    self.logger.info("Thread terminating early")
+                    server.quit()
+                    return
+                except:
+                    self.logger.exception("Thread terminating early error")
+                    return
+
             counter += 1
             if counter % 10 == 1 and counter != 1:
                 time.sleep(61)
@@ -69,4 +79,7 @@ class EmailThread(QRunnable):
         try:
             server.quit()
         except:
-            self.logger.exception("Trying to quit server")
+            self.logger.exception("Quitting server naturally")
+
+    def kill(self):
+        self.is_killed = True
