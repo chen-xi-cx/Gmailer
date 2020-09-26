@@ -37,7 +37,7 @@ class Ui_MainWindow_Extend(Ui_MainWindow):
                             "QMessageBox{\n"
                             "	background-color: rgb(255, 255, 255);\n"
                             "}")
-        msg.setIconPixmap(QPixmap("images/help-circle.svg"))
+        msg.setIconPixmap(QPixmap(":/icons/images/help-circle.svg"))
         msg.setText('Are you sure you want to send without a subject?')
         msg.setWindowTitle('Empty subject')
 
@@ -65,7 +65,7 @@ class Ui_MainWindow_Extend(Ui_MainWindow):
                             "QMessageBox{\n"
                             "	background-color: rgb(255, 255, 255);\n"
                             "}")
-        msg.setIconPixmap(QPixmap("images/help-circle.svg"))
+        msg.setIconPixmap(QPixmap(":/icons/images/help-circle.svg"))
         msg.setText('Emails are being sent. Are you sure you want to quit?')
         msg.setWindowTitle('Close program')
 

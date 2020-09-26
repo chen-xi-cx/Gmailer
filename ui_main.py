@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainXPYtCd.ui'
+## Form generated from reading UI file 'maingQFbbn.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.0
 ##
@@ -15,6 +15,7 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont,
     QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
 
+import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -99,7 +100,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(85, 170, 255);\n"
 "}")
         icon = QIcon()
-        icon.addFile(u"images/send_mail.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u":/icons/images/send_mail.png", QSize(), QIcon.Normal, QIcon.Off)
         self.send_mail_btn.setIcon(icon)
         self.send_mail_btn.setIconSize(QSize(25, 25))
         self.send_mail_btn.setCheckable(True)
@@ -130,7 +131,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(85, 170, 255);\n"
 "}")
         icon1 = QIcon()
-        icon1.addFile(u"images/time.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u":/icons/images/time.png", QSize(), QIcon.Normal, QIcon.Off)
         self.status_btn.setIcon(icon1)
         self.status_btn.setIconSize(QSize(25, 25))
         self.status_btn.setCheckable(True)
@@ -286,7 +287,7 @@ class Ui_MainWindow(object):
         self.pushButton.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border:none;")
         icon2 = QIcon()
-        icon2.addFile(u"images/mail.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u":/icons/images/mail.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton.setIcon(icon2)
 
         self.gridLayout.addWidget(self.pushButton, 0, 0, 1, 1)
@@ -343,7 +344,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
 "border:none;")
         icon3 = QIcon()
-        icon3.addFile(u"images/lock.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon3.addFile(u":/icons/images/lock.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton_2.setIcon(icon3)
 
         self.gridLayout_2.addWidget(self.pushButton_2, 0, 0, 1, 1)
@@ -565,7 +566,7 @@ class Ui_MainWindow(object):
 "	background-color: rgb(231, 233, 231);\n"
 "}")
         icon4 = QIcon()
-        icon4.addFile(u"images/paperclip.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon4.addFile(u":/icons/images/paperclip.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.attach_btn.setIcon(icon4)
 
         self.horizontalLayout_7.addWidget(self.attach_btn)

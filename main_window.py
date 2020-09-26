@@ -104,7 +104,7 @@ class MainWindow(QMainWindow):
             else:
                 event.ignore()
         else:
-            self.logger.info('Close program')
+            self.logger.info('Close program without active thread')
             event.accept()
 
 
@@ -118,7 +118,7 @@ class MainWindow(QMainWindow):
                                    '<br><b>Number of successful sends: {}'
                                    '<br>Number of fail sends: {}</b>'
                                    '<br>Failed emails saved as \'unsuccessful_emails.xlsx\' '
-                                   'in the folder where this app is in')
+                                   'on Desktop')
                                    .format(num_success, num_fail))
         self.ui.status.moveCursor(QTextCursor.End)
 

@@ -200,8 +200,8 @@ QPushButton:checked{
              <string>  Send Mail</string>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>images/send_mail.png</normaloff>images/send_mail.png</iconset>
+             <iconset resource="resources.qrc">
+              <normaloff>:/icons/images/send_mail.png</normaloff>:/icons/images/send_mail.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -263,8 +263,8 @@ QPushButton:checked{
              <string>  Send Status</string>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>images/time.png</normaloff>images/time.png</iconset>
+             <iconset resource="resources.qrc">
+              <normaloff>:/icons/images/time.png</normaloff>:/icons/images/time.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -556,8 +556,8 @@ border:none;</string>
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset>
-                        <normaloff>images/mail.svg</normaloff>images/mail.svg</iconset>
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/icons/images/mail.svg</normaloff>:/icons/images/mail.svg</iconset>
                       </property>
                      </widget>
                     </item>
@@ -678,8 +678,8 @@ border:none;</string>
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset>
-                        <normaloff>images/lock.png</normaloff>images/lock.png</iconset>
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/icons/images/lock.png</normaloff>:/icons/images/lock.png</iconset>
                       </property>
                      </widget>
                     </item>
@@ -1146,8 +1146,8 @@ QPushButton::hover{
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset>
-                        <normaloff>images/paperclip.svg</normaloff>images/paperclip.svg</iconset>
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/icons/images/paperclip.svg</normaloff>:/icons/images/paperclip.svg</iconset>
                       </property>
                      </widget>
                     </item>
@@ -1359,7 +1359,9 @@ QProgressBar::chunk {
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
  <buttongroups>
   <buttongroup name="side_button_group"/>

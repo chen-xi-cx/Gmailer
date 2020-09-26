@@ -34,7 +34,7 @@ class AttachmentLabel(QWidget):
         self.delete_btn.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
                                         "border: none;")
         icon5 = QIcon()
-        icon5.addFile(u"images/x.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon5.addFile(":/icons/images/x.png", QSize(), QIcon.Normal, QIcon.Off)
         self.delete_btn.setIcon(icon5)
         inner_layout.addWidget(self.delete_btn)
         outer_layout = QHBoxLayout()

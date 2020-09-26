@@ -1,3 +1,7 @@
-__pycache__/
+__pycache__
 log file
 unsuccessful_emails.xlsx
+build
+dist
+.vscode
+Gmailer.spec

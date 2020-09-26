@@ -1,6 +1,7 @@
 import logging
 import smtplib
 import ssl
+import os
 
 import numpy as np
 import pandas as pd
@@ -108,7 +109,8 @@ class Logic(QObject):
             self.thread_list = []
 
             unsuccessful_df = pd.DataFrame(self.unsuccessful_list, columns=['email'])
-            unsuccessful_df.to_excel('unsuccessful_emails.xlsx', index=False)
+            # output excel file to desktop
+            unsuccessful_df.to_excel('{}/unsuccessful_emails.xlsx'.format(os.path.join(os.environ["HOMEPATH"], "Desktop")), index=False)
             
             unsuccessful_file_string = '\n'.join(self.unsuccessful_list)
             self.logger.info('unsuccessful list\n{}'.format(unsuccessful_file_string))

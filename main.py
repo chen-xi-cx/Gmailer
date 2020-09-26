@@ -19,10 +19,8 @@ class App(QApplication):
 
 
 if __name__ == '__main__':
-    try:
+    if not os.path.exists('log file'):
         os.mkdir('log file')
-    except:
-        pass
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     file_handler = RotatingFileHandler('log file/app.log', maxBytes=100000, backupCount=10)

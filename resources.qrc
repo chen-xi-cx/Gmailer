@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>images/help-circle.svg</file>
+    <file>images/lock.png</file>
+    <file>images/mail.svg</file>
+    <file>images/paperclip.svg</file>
+    <file>images/send_mail.png</file>
+    <file>images/time.png</file>
+    <file>images/x.png</file>
+  </qresource>
+</RCC>
