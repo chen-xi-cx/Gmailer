@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>750</height>
+    <height>900</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1000</width>
-    <height>750</height>
+    <height>900</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -443,6 +443,11 @@ QScrollBar::sub-line {
               </property>
               <item>
                <widget class="QFrame" name="frame">
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QFrame{
 	background-color: rgb(255, 255, 255);
@@ -484,7 +489,7 @@ QScrollBar::sub-line {
                 <property name="frameShadow">
                  <enum>QFrame::Plain</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_9">
+                <layout class="QVBoxLayout" name="verticalLayout_7">
                  <item>
                   <widget class="QLabel" name="label_3">
                    <property name="minimumSize">
@@ -747,10 +752,10 @@ border:none;</string>
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
-                    <property name="horizontalSpacing">
-                     <number>0</number>
+                    <property name="spacing">
+                     <number>7</number>
                     </property>
-                    <item row="0" column="2">
+                    <item row="0" column="3">
                      <widget class="QPushButton" name="browse_file_btn">
                       <property name="minimumSize">
                        <size>
@@ -793,10 +798,44 @@ QPushButton:hover{
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="1">
-                     <widget class="QLabel" name="to_email_label">
+                    <item row="0" column="1" colspan="2">
+                     <widget class="QLineEdit" name="to_email_label">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background:transparent;
+border:none;
+border-bottom:1px solid #717072;
+border-radius: 0px;
+color: rgb(113, 112, 114);
+padding-left: 1.5px;
+padding-bottom: 5px;
+padding-top: 5px;</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="placeholderText">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLineEdit" name="to_entry">
                       <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
@@ -809,86 +848,55 @@ QPushButton:hover{
                       </property>
                       <property name="font">
                        <font>
-                        <family>Microsoft Sans Serif</family>
                         <pointsize>12</pointsize>
                        </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>ArrowCursor</cursorShape>
                       </property>
                       <property name="styleSheet">
                        <string notr="true">background:transparent;
 border:none;
-border-bottom:1px solid #717072;
 border-radius: 0px;
 color: rgb(113, 112, 114);
+padding-left: 1.5px;
 padding-bottom: 5px;
-margin-right: 5px;</string>
-                      </property>
-                      <property name="text">
-                       <string/>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_5">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>40</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <family>Microsoft Sans Serif</family>
-                        <pointsize>12</pointsize>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">background:transparent;
-border:none;
-border-bottom:1px solid #717072;
-border-radius: 0px;
-color: rgb(113, 112, 114);
-padding-bottom: 5px;</string>
+padding-top: 5px;</string>
                       </property>
                       <property name="text">
                        <string>To</string>
                       </property>
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="placeholderText">
+                       <string>Subject</string>
+                      </property>
                      </widget>
                     </item>
-                    <item row="1" column="1">
+                    <item row="1" column="0">
                      <widget class="QLabel" name="receiver_file_label">
                       <property name="text">
                        <string/>
                       </property>
                      </widget>
                     </item>
+                    <item row="1" column="1">
+                     <widget class="QLabel" name="to_error">
+                      <property name="font">
+                       <font>
+                        <pointsize>10</pointsize>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">color: rgb(255, 0, 0);</string>
+                      </property>
+                      <property name="text">
+                       <string>Please select email list</string>
+                      </property>
+                     </widget>
+                    </item>
                    </layout>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="to_error">
-                   <property name="font">
-                    <font>
-                     <pointsize>10</pointsize>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color: rgb(255, 0, 0);</string>
-                   </property>
-                   <property name="text">
-                    <string>Please select email list</string>
-                   </property>
                   </widget>
                  </item>
                  <item>
@@ -899,10 +907,7 @@ padding-bottom: 5px;</string>
                    <property name="frameShadow">
                     <enum>QFrame::Raised</enum>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_7">
-                    <property name="spacing">
-                     <number>7</number>
-                    </property>
+                   <layout class="QGridLayout" name="gridLayout_4">
                     <property name="leftMargin">
                      <number>0</number>
                     </property>
@@ -915,39 +920,7 @@ padding-bottom: 5px;</string>
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
-                    <item>
-                     <widget class="QLineEdit" name="column_name_entry">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>33</height>
-                       </size>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <pointsize>12</pointsize>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">background:transparent;
-border:none;
-border-bottom:1px solid #717072;
-border-radius: 0px;
-color: rgb(113, 112, 114);
-padding-bottom: 5px;</string>
-                      </property>
-                      <property name="placeholderText">
-                       <string>Email column name</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
+                    <item row="1" column="1">
                      <widget class="QLabel" name="invalid_col_error">
                       <property name="font">
                        <font>
@@ -958,7 +931,95 @@ padding-bottom: 5px;</string>
                        <string notr="true">color: rgb(255, 0, 0);</string>
                       </property>
                       <property name="text">
-                       <string>Please enter a valid name</string>
+                       <string>Please select valid email column</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QComboBox" name="email_column_combo">
+                      <property name="font">
+                       <font>
+                        <pointsize>12</pointsize>
+                        <kerning>true</kerning>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QComboBox {
+	border: none;
+    border-bottom: 1px solid black;
+	padding-left: 1.5px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	color: rgb(113, 112, 114);
+	background-color: rgb(255, 255, 255);
+}
+
+
+QComboBox::drop-down {
+    width: 20px;
+	padding: 5px;
+	border: transparent;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icons/images/chevron-down.svg);
+}</string>
+                      </property>
+                      <property name="currentText">
+                       <string>Select email column</string>
+                      </property>
+                      <property name="currentIndex">
+                       <number>0</number>
+                      </property>
+                      <property name="placeholderText">
+                       <string/>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>Select email column</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLineEdit" name="email_column_entry">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>ArrowCursor</cursorShape>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background:transparent;
+border:none;
+border-radius: 0px;
+color: rgb(113, 112, 114);
+padding-left: 1.5px;
+padding-bottom: 5px;
+padding-top: 5px;</string>
+                      </property>
+                      <property name="text">
+                       <string>Email Column</string>
+                      </property>
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="placeholderText">
+                       <string>Subject</string>
                       </property>
                      </widget>
                     </item>
@@ -1045,7 +1106,7 @@ padding-bottom: 5px;</string>
                       <x>0</x>
                       <y>0</y>
                       <width>736</width>
-                      <height>120</height>
+                      <height>232</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1074,6 +1135,9 @@ padding-bottom: 5px;</string>
                          <pointsize>12</pointsize>
                         </font>
                        </property>
+                       <property name="toolTip">
+                        <string/>
+                       </property>
                        <property name="styleSheet">
                         <string notr="true">background:transparent;
 border:none;
@@ -1091,7 +1155,7 @@ padding-top: 5px;</string>
                         <enum>QAbstractScrollArea::AdjustIgnored</enum>
                        </property>
                        <property name="placeholderText">
-                        <string>Message</string>
+                        <string>Message. You can use field variables by specifying {{column name}} to include data from excel files. For example, Hi {{name}}, where name is a column in your excel file.</string>
                        </property>
                       </widget>
                      </item>
@@ -1179,6 +1243,49 @@ QPushButton::hover{
                      </widget>
                     </item>
                     <item>
+                     <widget class="QPushButton" name="preview_btn">
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>50</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>PointingHandCursor</cursorShape>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton{
+	background-color: rgb(85, 170, 255);
+	color: rgb(255, 255, 255);
+	border: 2px solid;
+	border-color: none;
+	border-radius: 10px;
+	padding: 10px
+}
+
+QPushButton:hover{
+	background-color: rgb(85, 170, 255);
+	border: 2px solid;
+	border-color: rgb(85, 85, 255);
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Preview message</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
                      <widget class="QPushButton" name="send_btn">
                       <property name="minimumSize">
                        <size>
@@ -1219,6 +1326,114 @@ QPushButton:hover{
                       <property name="text">
                        <string>Send</string>
                       </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_11">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_5">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="label_8">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>300</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>40</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>Microsoft Sans Serif</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">background:transparent;
+border:none;
+border-radius: 0px;
+color: rgb(113, 112, 114);</string>
+                      </property>
+                      <property name="text">
+                       <string>Personalised attachment column</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QComboBox" name="personalised_att_combo">
+                      <property name="font">
+                       <font>
+                        <pointsize>12</pointsize>
+                        <kerning>true</kerning>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QComboBox {
+	border: none;
+    border-bottom: 1px solid black;
+	padding-left: 1.5px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	color: rgb(113, 112, 114);
+	background-color: rgb(255, 255, 255);
+}
+
+
+QComboBox::drop-down {
+    width: 20px;
+	padding: 5px;
+	border: transparent;
+}
+
+
+QComboBox::down-arrow {
+    image: url(:/icons/images/chevron-down.svg);
+}</string>
+                      </property>
+                      <property name="currentText">
+                       <string>Select personalised attachment (Optional)</string>
+                      </property>
+                      <property name="currentIndex">
+                       <number>0</number>
+                      </property>
+                      <property name="placeholderText">
+                       <string/>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>Select personalised attachment (Optional)</string>
+                       </property>
+                      </item>
                      </widget>
                     </item>
                    </layout>

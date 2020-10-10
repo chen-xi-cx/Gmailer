@@ -1,14 +1,20 @@
-import os
 import logging
+import os
 from functools import partial
+from typing import Optional
 
+import pandas as pd
+from numpy.ma.core import count
 from PySide2.QtCore import Qt, QTimer
 from PySide2.QtGui import QFontMetrics, QTextCursor
-from PySide2.QtWidgets import QFileDialog, QMainWindow, QMessageBox, QTextEdit, QApplication
+from PySide2.QtWidgets import (QApplication, QComboBox, QFileDialog,
+                               QMainWindow, QMessageBox, QTextEdit)
 
 from attachment_label import AttachmentLabel
-from ui_extend import Ui_MainWindow_Extend
 from ui_close_window import Ui_CloseWindow
+from ui_extend import Ui_MainWindow_Extend
+from ui_message_preview import Ui_MessagePreview
+
 
 class CloseWindow(QMainWindow):
     def __init__(self):
@@ -18,6 +24,13 @@ class CloseWindow(QMainWindow):
         self.ui.setupUi(self)
         flag = Qt.WindowFlags(Qt.WindowMinimizeButtonHint)
         self.setWindowFlags(flag)
+
+class PreviewWindow(QMainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+
+        self.ui = Ui_MessagePreview()
+        self.ui.setupUi(self)
 
 class MainWindow(QMainWindow):
     def __init__(self, model, logic):
@@ -33,15 +46,16 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.close_window = CloseWindow()
+        self.preview_window = PreviewWindow()
 
         self.ui.receiver_file_label.setVisible(False)
-        self.ui.status.setText('You haven\'t send anything!')
+        self.ui.status.setText('You haven\'t sent anything!')
 
         self.fm = QFontMetrics(self.ui.to_email_label.font()) # for setting text ellipsis
         # self.ui.msg_entry.installEventFilter(self)
 
         compulsory_list = []
-        compulsory_list.append(self.ui.column_name_entry)
+        compulsory_list.append(self.ui.email_column_combo)
         compulsory_list.append(self.ui.receiver_file_label)
         compulsory_list.append(self.ui.my_password_entry)
         compulsory_list.append(self.ui.my_email_entry)
@@ -49,6 +63,7 @@ class MainWindow(QMainWindow):
         optional_list = []
         optional_list.append(self.ui.subject_entry)
         optional_list.append(self.ui.msg_entry)
+        optional_list.append(self.ui.personalised_att_combo)
         
 
         # listen for ui event signals
@@ -64,6 +79,7 @@ class MainWindow(QMainWindow):
         self.ui.browse_file_btn.clicked.connect(self.browse_file)
         self.ui.attach_btn.clicked.connect(self.attach_file)
         self.ui.send_btn.clicked.connect(lambda : self.send_email(compulsory_list, optional_list, True))
+        self.ui.preview_btn.clicked.connect(lambda : self.open_preview_window(compulsory_list, optional_list))
 
         # listen for logic event signals
         getattr(self.logic, 'signal_' + str(4)).connect(lambda : self.show_no_subject_pop_up(compulsory_list, optional_list))
@@ -77,6 +93,15 @@ class MainWindow(QMainWindow):
         self.logic.fail_email.connect(self.update_fail_status)
         self.logic.sending_done.connect(self.show_sending_finish)
         self.logic.send_progress.connect(self.update_progress_bar)
+
+    def open_preview_window(self, compulsory_list, optional_list):
+        self.hide_error_message()
+        self.preview_window.show()
+        compulsory_text = self.get_compulsory_text(compulsory_list)
+        optional_text = self.get_optional_text(optional_list)
+        subject_preview, message_preview = self.logic.show_preview(compulsory_text, optional_text)
+        self.preview_window.ui.subject_preview.setText(subject_preview)
+        self.preview_window.ui.msg_preview.setText(message_preview)
 
     def switch_to_email_pg(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.mail_page)
@@ -181,7 +206,10 @@ class MainWindow(QMainWindow):
     def get_compulsory_text(self, compulsory_list):
         compulsory_text = []
         for ele in compulsory_list:
-            compulsory_text.append(ele.text())
+            if isinstance(ele, QComboBox):
+                compulsory_text.append(ele.currentText())
+            else:
+                compulsory_text.append(ele.text())
         return compulsory_text
 
     def get_optional_text(self, optional_list):
@@ -189,6 +217,8 @@ class MainWindow(QMainWindow):
         for ele in optional_list:
             if isinstance(ele, QTextEdit):
                 optional_text.append(ele.toPlainText())
+            elif isinstance(ele, QComboBox):
+                optional_text.append(ele.currentText())
             else:
                 optional_text.append(ele.text())
         return optional_text
@@ -204,6 +234,16 @@ class MainWindow(QMainWindow):
         self.ui.to_email_label.setText(self.fm.elidedText(receiver_file_name.split('/')[-1],
                                                             Qt.ElideRight, label_width))
         self.ui.receiver_file_label.setText(receiver_file_name)
+        receiver_df = pd.read_excel(receiver_file_name)
+        self.update_combo_box(self.ui.email_column_combo, receiver_df.columns)
+        self.update_combo_box(self.ui.personalised_att_combo, receiver_df.columns)
+
+    def update_combo_box(self, combo_box, column_names):
+        if combo_box.count() > 1:
+            for idx in range(combo_box.count() - 1, 0, -1):
+                combo_box.removeItem(idx)
+
+        combo_box.addItems(column_names)
 
     def attach_file(self):
         attach_file_name, _ = QFileDialog.getOpenFileName(self, 'Select A File',
@@ -233,7 +273,6 @@ class MainWindow(QMainWindow):
 
     def show_email_column_error(self):
         self.ui.invalid_col_error.show()
-        self.ui.column_name_entry.setFocus()
 
     def show_receiver_email_error(self):
         self.ui.to_error.show()

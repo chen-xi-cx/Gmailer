@@ -2,6 +2,7 @@
   <qresource prefix="icons">
     <file>images/help-circle.svg</file>
     <file>images/lock.png</file>
+    <file>images/chevron-down.svg</file>
     <file>images/mail.svg</file>
     <file>images/paperclip.svg</file>
     <file>images/send_mail.png</file>
