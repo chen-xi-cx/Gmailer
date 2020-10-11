@@ -3,6 +3,7 @@ import smtplib
 import ssl
 import os
 import re
+import time
 
 import numpy as np
 import pandas as pd
@@ -10,6 +11,7 @@ from PySide2.QtCore import QObject, QThreadPool, Signal
 
 from attachment_label import AttachmentLabel
 from email_thread import EmailThread
+from start_thread import StartThread
 
 
 class Logic(QObject):
@@ -41,8 +43,6 @@ class Logic(QObject):
         self.successful_email_counter = 0
         self.unsuccessful_list = []
         self.threadpool = QThreadPool()
-        num_email_threads = 5
-        self.threadpool.setMaxThreadCount(num_email_threads)
         self.total_email = 0
         self.thread_list = []
 
@@ -91,20 +91,24 @@ class Logic(QObject):
 
 
         self.total_email = len(receiver_df)
-        num_email_threads = min(1, len(receiver_df))
+        num_email_threads = len(receiver_df)
+        self.threadpool.setMaxThreadCount(num_email_threads)
         receiver_df = np.array_split(receiver_df, num_email_threads)
 
         self.successful_email_counter = 0
         self.unsuccessful_list = []
 
         self.sending_start.emit()
-        for sublist in receiver_df:
-            email_thread = EmailThread(sublist, email_input)
-            email_thread.signal.invalid_email_column.connect(self.show_invalid_email_error)
-            email_thread.signal.fail_email.connect(self.update_fail_email)
-            email_thread.signal.success_email.connect(self.update_successful_email)
-            self.thread_list.append(email_thread)
-            self.threadpool.start(email_thread)
+        start_thread = StartThread(self, receiver_df, email_input)
+        self.threadpool.start(start_thread)
+        # for sublist in receiver_df:
+        #     email_thread = EmailThread(sublist, email_input)
+        #     email_thread.signal.invalid_email_column.connect(self.show_invalid_email_error)
+        #     email_thread.signal.fail_email.connect(self.update_fail_email)
+        #     email_thread.signal.success_email.connect(self.update_successful_email)
+        #     self.thread_list.append(email_thread)
+        #     self.threadpool.start(email_thread)
+        #     time.sleep(5)
 
     def kill_thread(self):
         for thread in self.thread_list:
