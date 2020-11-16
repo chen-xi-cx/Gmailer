@@ -24,6 +24,7 @@ class Logic(QObject):
     success_email = Signal(str)
     sending_done = Signal(int, int)
     send_progress = Signal(int)
+    estimate_time_finish = Signal(int)
 
     attachment_limit_reached = Signal()
     attachment_byte_limit = 20000000 #20 MB
@@ -78,6 +79,7 @@ class Logic(QObject):
             server = smtplib.SMTP("smtp.gmail.com", 587)
             server.starttls(context=context)
             server.login(my_email, password)
+            server.quit()
         except smtplib.SMTPAuthenticationError:
             self.signal_2.emit()
             self.signal_3.emit()
@@ -103,12 +105,17 @@ class Logic(QObject):
             email_thread.signal.invalid_email_column.connect(self.show_invalid_email_error)
             email_thread.signal.fail_email.connect(self.update_fail_email)
             email_thread.signal.success_email.connect(self.update_successful_email)
+            email_thread.signal.duration.connect(self.update_estimated_time_finish)
             self.thread_list.append(email_thread)
             self.threadpool.start(email_thread)
 
     def kill_thread(self):
         for thread in self.thread_list:
             thread.kill()
+
+    def update_estimated_time_finish(self, duration):
+        time_remaining = duration * (self.total_email - len(self.unsuccessful_list) - self.successful_email_counter)
+        self.estimate_time_finish.emit(int(time_remaining))
 
             
     def is_sending_done(self):

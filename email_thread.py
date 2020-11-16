@@ -17,6 +17,7 @@ class EmailThreadSignal(QObject):
     invalid_email_column = Signal(list)
     fail_email = Signal(str, list)
     success_email = Signal(str)
+    duration = Signal(float)
 
 
 class EmailThread(QRunnable):
@@ -35,6 +36,7 @@ class EmailThread(QRunnable):
         server.starttls(context=context)
         server.login(self.email_input['my_email'], self.email_input['password'])
         counter = 0
+        start_time_fifty = time.time()
         for _, row in self.receiver_df.iterrows():
             if self.is_killed:
                 try:
@@ -46,8 +48,12 @@ class EmailThread(QRunnable):
                     return
 
             counter += 1
+
+            ## prevent gmail from blocking us
             if counter % 50 == 1 and counter != 1:
-                time.sleep(61)
+                if time.time() - start_time_fifty < 60:
+                    time.sleep(60)
+                start_time_fifty = time.time()
             try:
                 row_dict = row.to_dict()
                 receiver_email = row_dict[self.email_input['email_column']]
@@ -68,8 +74,10 @@ class EmailThread(QRunnable):
                 start_time = time.time()
                 server.sendmail(self.email_input['my_email'], receiver_email, msg.as_string())
                 self.signal.success_email.emit(receiver_email)
+                duration = time.time() - start_time
+                self.signal.duration.emit(duration)
 
-                if (time.time() - start_time < 1):
+                if duration < 1:
                     time.sleep(1)
 
             # except smtplib.SMTPRecipientsRefused:

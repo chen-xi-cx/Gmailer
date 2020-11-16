@@ -1504,7 +1504,7 @@ QScrollBar::sub-line {
                 <property name="frameShadow">
                  <enum>QFrame::Plain</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_10">
+                <layout class="QVBoxLayout" name="verticalLayout_9">
                  <item>
                   <widget class="QTextEdit" name="status">
                    <property name="font">
@@ -1514,6 +1514,18 @@ QScrollBar::sub-line {
                    </property>
                    <property name="readOnly">
                     <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="estimated_time_finish_label">
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string/>
                    </property>
                   </widget>
                  </item>

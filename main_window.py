@@ -93,6 +93,20 @@ class MainWindow(QMainWindow):
         self.logic.fail_email.connect(self.update_fail_status)
         self.logic.sending_done.connect(self.show_sending_finish)
         self.logic.send_progress.connect(self.update_progress_bar)
+        self.logic.estimate_time_finish.connect(self.update_estimated_time_finish)
+
+    def update_estimated_time_finish(self, duration):
+        num_hour = int(duration / 3600)
+        num_minute = int((duration % 3600) / 60)
+
+        if duration == 0:
+            self.ui.estimated_time_finish_label.setText("")
+        elif duration < 60:
+            self.ui.estimated_time_finish_label.setText('Estimated time remaining: less than 1 minute')
+        elif num_hour == 0:
+            self.ui.estimated_time_finish_label.setText(f'Estimated time remaining: {num_minute} minute(s)')
+        else:
+            self.ui.estimated_time_finish_label.setText(f'Estimated time remaining: {num_hour} hour(s) {num_minute} minute(s)')
 
     def open_preview_window(self, compulsory_list, optional_list):
         self.hide_error_message()
@@ -146,6 +160,7 @@ class MainWindow(QMainWindow):
                                    'on Desktop')
                                    .format(num_success, num_fail))
         self.ui.status.moveCursor(QTextCursor.End)
+
 
     def show_sending_start(self):
         self.ui.progress_bar.setValue(0)

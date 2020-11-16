@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainTHIqoh.ui'
+## Form generated from reading UI file 'mainThzwoh.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.0
 ##
@@ -770,14 +770,20 @@ class Ui_MainWindow(object):
 "}")
         self.frame_10.setFrameShape(QFrame.NoFrame)
         self.frame_10.setFrameShadow(QFrame.Plain)
-        self.verticalLayout_10 = QVBoxLayout(self.frame_10)
-        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.verticalLayout_9 = QVBoxLayout(self.frame_10)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.status = QTextEdit(self.frame_10)
         self.status.setObjectName(u"status")
         self.status.setFont(font1)
         self.status.setReadOnly(True)
 
-        self.verticalLayout_10.addWidget(self.status)
+        self.verticalLayout_9.addWidget(self.status)
+
+        self.estimated_time_finish_label = QLabel(self.frame_10)
+        self.estimated_time_finish_label.setObjectName(u"estimated_time_finish_label")
+        self.estimated_time_finish_label.setFont(font1)
+
+        self.verticalLayout_9.addWidget(self.estimated_time_finish_label)
 
         self.progress_bar = QProgressBar(self.frame_10)
         self.progress_bar.setObjectName(u"progress_bar")
@@ -800,7 +806,7 @@ class Ui_MainWindow(object):
         self.progress_bar.setInvertedAppearance(False)
         self.progress_bar.setTextDirection(QProgressBar.TopToBottom)
 
-        self.verticalLayout_10.addWidget(self.progress_bar)
+        self.verticalLayout_9.addWidget(self.progress_bar)
 
 
         self.verticalLayout_8.addWidget(self.frame_10)
@@ -869,6 +875,7 @@ class Ui_MainWindow(object):
 
         self.personalised_att_combo.setCurrentText(QCoreApplication.translate("MainWindow", u"Select personalised attachment (Optional)", None))
         self.personalised_att_combo.setPlaceholderText("")
+        self.estimated_time_finish_label.setText("")
         self.progress_bar.setFormat(QCoreApplication.translate("MainWindow", u"%p%", None))
     # retranslateUi
 
