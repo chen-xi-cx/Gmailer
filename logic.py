@@ -22,7 +22,7 @@ class Logic(QObject):
     sending_start = Signal()
     fail_email = Signal(str)
     success_email = Signal(str)
-    sending_done = Signal(int, int)
+    sending_done = Signal(int, int, str)
     send_progress = Signal(int)
     estimate_time_finish = Signal(int)
 
@@ -122,12 +122,13 @@ class Logic(QObject):
         num_email_processed = len(self.unsuccessful_list) + self.successful_email_counter
         self.send_progress.emit(num_email_processed / self.total_email * 100)
         if num_email_processed == self.total_email:
-            self.sending_done.emit(self.successful_email_counter, len(self.unsuccessful_list))
-            self.thread_list = []
-
-            unsuccessful_df = pd.DataFrame(self.unsuccessful_list)
             # output excel file to desktop
-            unsuccessful_df.to_excel('{}/unsuccessful_emails.xlsx'.format(os.path.join(os.environ["HOMEPATH"], "Desktop")), index=False)
+            unsuccessful_df = pd.DataFrame(self.unsuccessful_list)
+            save_path = os.path.join(os.path.expanduser("~"), "Desktop", "unsuccessful_emails.xlsx")
+            unsuccessful_df.to_excel(save_path, index=False)
+            
+            self.sending_done.emit(self.successful_email_counter, len(self.unsuccessful_list), save_path)
+            self.thread_list = []
             
             self.logger.info('Send finished')
 

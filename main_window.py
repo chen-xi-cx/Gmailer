@@ -150,15 +150,14 @@ class MainWindow(QMainWindow):
     def update_progress_bar(self, progress):
         self.ui.progress_bar.setValue(progress)
 
-    def show_sending_finish(self, num_success, num_fail):
+    def show_sending_finish(self, num_success, num_fail, csv_path):
         self.ui.send_btn.setEnabled(True)
         self.ui.status.moveCursor(QTextCursor.End)
         self.ui.status.insertHtml(('<br>All emails sent!'
                                    '<br><b>Number of successful sends: {}'
                                    '<br>Number of fail sends: {}</b>'
-                                   '<br>Failed emails saved as \'unsuccessful_emails.xlsx\' '
-                                   'on Desktop')
-                                   .format(num_success, num_fail))
+                                   '<br>Failed emails saved to {}')
+                                   .format(num_success, num_fail, csv_path))
         self.ui.status.moveCursor(QTextCursor.End)
 
 
