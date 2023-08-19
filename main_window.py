@@ -230,7 +230,7 @@ class MainWindow(QMainWindow):
         optional_text = []
         for ele in optional_list:
             if isinstance(ele, QTextEdit):
-                optional_text.append(ele.toPlainText())
+                optional_text.append(ele.toHtml())
             elif isinstance(ele, QComboBox):
                 optional_text.append(ele.currentText())
             else:

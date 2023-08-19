@@ -62,7 +62,6 @@ class EmailThread(QRunnable):
                 msg["To"] = receiver_email
                 msg['Subject'] = self.process_placeholder(row_dict, self.email_input['subject'])
                 body_msg = self.process_placeholder(row_dict, self.email_input['body'])
-                body_msg = body_msg.replace("\n", "<br>")
                 msg.attach(MIMEText(body_msg, "html"))
                 
                 if self.email_input['personalised_att'] != 'Select personalised attachment (Optional)':
