@@ -1,4 +1,4 @@
-name: gmailer_full
+name: gmailer
 channels:
   - defaults
 dependencies:
